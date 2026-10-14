@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090A0F">
+  <title>Open-source notices | Zafronix AI</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+    html { color-scheme: dark; }
+    body { margin: 0; padding: 40px 16px 72px; background: #090a0f; color: #f2f4fa; font-family: "Segoe UI Variable Text", "SF Pro Text", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.6; }
+    main { max-width: 760px; margin: 0 auto; }
+    h1 { font-size: 2rem; letter-spacing: -0.03em; margin: 0 0 8px; }
+    h2 { font-size: 1.125rem; margin: 32px 0 8px; }
+    p, li { color: #c3c8d8; }
+    a { color: #b9a7fb; }
+    a:focus-visible { outline: 2px solid #38bdf8; outline-offset: 2px; }
+    pre { white-space: pre-wrap; background: #12141d; border: 1px solid #262a3a; border-radius: 12px; padding: 16px; color: #c3c8d8; font-size: 0.8125rem; line-height: 1.55; }
+    ul { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="/">Back to the upscaler</a></p>
+    <h1>Open-source notices</h1>
+    <p>Zafronix AI Videos Upscaler is built on open-source work by other people. Their notices are reproduced or referenced here.</p>
+
+    <h2>free-ai-video-upscaler</h2>
+    <p>The video pipeline (demux, decode, upscale, encode, mux) and the in-memory output writer are adapted from the free-ai-video-upscaler project by Sam Bhattacharyya, which is released under the MIT License:</p>
+    <pre>MIT License
+
+Copyright (c) 2026 Sam Bhattacharyya
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre>
+
+    <h2>Libraries and models</h2>
+    <ul>
+      <li><strong>WebSR</strong> (@websr/websr): the WebGPU runtime that executes the neural network.</li>
+      <li><strong>Anime4K</strong>: the CNN upscaling networks that the model weights in this site are based on.</li>
+      <li><strong>Mediabunny</strong>: reading and writing MP4 files in the browser.</li>
+      <li><strong>web-demuxer</strong>: reading compressed video and audio packets from video files, using a WebAssembly build of FFmpeg's demuxers.</li>
+    </ul>
+    <p>Each of these is distributed under its own license, which is included in its package. The model weight files in <code>/weights</code> come from the reference project above. Their original training and licensing terms should be confirmed with the authors before any commercial use of this site.</p>
+  </main>
+</body>
+</html>

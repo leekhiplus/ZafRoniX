@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Zafronix AI Videos Upscaler: enhance video to 1080p and images up to 8K</title>
+  <meta name="description" content="Upscale low-resolution video to 1080p and images up to 8K with a neural network that runs on your own GPU, in your browser. Free, private, no upload.">
+  <meta name="theme-color" content="#090A0F">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://zafronix-ai.netlify.app/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Zafronix AI">
+  <meta property="og:title" content="Zafronix AI Videos Upscaler: Enhance Every Frame.">
+  <meta property="og:description" content="Upscale video to 1080p and images up to 8K on your own GPU. Private, free, no upload.">
+  <meta property="og:url" content="https://zafronix-ai.netlify.app/">
+  <meta property="og:image" content="https://zafronix-ai.netlify.app/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Zafronix AI wordmark with the tagline Enhance Every Frame.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zafronix AI Videos Upscaler">
+  <meta name="twitter:description" content="Upscale video to 1080p and images up to 8K on your own GPU. Private, free, no upload.">
+  <meta name="twitter:image" content="https://zafronix-ai.netlify.app/og.png">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip" href="#upscaler">Skip to the upscaler</a>
+
+  <header class="topbar">
+    <div class="wrap topbar-in">
+      <a class="brand" href="#top" aria-label="Zafronix AI, home">
+        <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+          <use href="#zmark"/>
+        </svg>
+        <span class="brand-name">Zafronix</span><span class="brand-ai">AI</span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Primary">
+        <a href="#upscaler">Upscaler</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+
+      <a class="btn btn-primary btn-sm topbar-cta" href="#upscaler">Start upscaling</a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Shared SVG symbols -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="zgrad" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#8B5CF6"/>
+        <stop offset="1" stop-color="#38BDF8"/>
+      </linearGradient>
+      <!-- The mark: a Z whose diagonal starts as coarse pixels (low resolution) and resolves into a clean line. -->
+      <symbol id="zmark" viewBox="0 0 48 48">
+        <rect x="7" y="7" width="34" height="7" rx="1.5" fill="url(#zgrad)"/>
+        <rect x="7" y="34" width="34" height="7" rx="1.5" fill="url(#zgrad)"/>
+        <polygon points="41,14 32,14 22,22 31,22" fill="url(#zgrad)"/>
+        <g fill="url(#zgrad)" shape-rendering="crispEdges">
+          <rect x="14.5" y="22" width="9" height="6"/>
+          <rect x="7" y="28" width="9" height="6"/>
+        </g>
+      </symbol>
+    </defs>
+  </svg>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <h1>Enhance every frame.</h1>
+        <p class="lede">Zafronix sharpens low-resolution video up to 1080p and enlarges images up to 8K. The neural network runs on your own graphics card, inside this page. Your files never leave your device.</p>
+        <ul class="facts">
+          <li>Runs on your GPU with WebGPU</li>
+          <li>No upload, no account</li>
+          <li>Video to 1080p, images to 8K</li>
+        </ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 48 48" class="hero-mark"><use href="#zmark"/></svg>
+      </div>
+    </section>
+
+    <!-- ===================================================== STUDIO -->
+    <section class="studio wrap" id="upscaler" aria-labelledby="studio-title">
+      <h2 class="sr-only" id="studio-title">Upscaler</h2>
+
+      <div class="studio-bar">
+        <div class="tabs" role="tablist" aria-label="Media type">
+          <button class="tab" role="tab" type="button" id="tab-video" data-tab="video" aria-selected="true" aria-controls="panel">Video</button>
+          <button class="tab" role="tab" type="button" id="tab-image" data-tab="image" aria-selected="false" aria-controls="panel" tabindex="-1">Image</button>
+        </div>
+        <ul class="checks" id="checks" aria-label="Browser capabilities">
+          <li class="check" data-state="pending"><span class="dot"></span><span class="check-name">WebGPU</span><span class="check-detail">Checking</span></li>
+          <li class="check" data-state="pending"><span class="dot"></span><span class="check-name">Video codecs</span><span class="check-detail">Checking</span></li>
+        </ul>
+      </div>
+
+      <div class="studio-grid" id="studio" data-tab="video" role="tabpanel" aria-labelledby="tab-video">
+        <div id="panel" class="sr-only"></div>
+
+        <!-- ------------------------------------------- viewport -->
+        <div class="viewport" id="viewport" data-state="empty">
+
+          <!-- empty -->
+          <div class="vp-state vp-empty" id="st-empty">
+            <div class="drop" id="drop">
+              <svg class="drop-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <p class="drop-title" id="drop-title">Drop a video here</p>
+              <p class="drop-sub" id="drop-sub">MP4, MOV, WebM or MKV</p>
+              <button class="btn btn-primary" type="button" id="pick-btn">Choose video</button>
+              <input id="file-input" type="file" hidden>
+            </div>
+          </div>
+
+          <!-- file selected -->
+          <div class="vp-state vp-selected" id="st-selected" hidden>
+            <div class="stage" id="sel-stage"></div>
+            <div class="filebar">
+              <div class="filebar-info">
+                <p class="filename" id="sel-name"></p>
+                <ul class="chips" id="sel-chips"></ul>
+              </div>
+              <div class="filebar-actions">
+                <button class="btn btn-ghost btn-sm" type="button" id="replace-btn">Replace</button>
+                <button class="btn btn-ghost btn-sm" type="button" id="remove-btn">Remove</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- processing -->
+          <div class="vp-state vp-processing" id="st-processing" hidden>
+            <div class="stage" id="live-stage">
+              <canvas id="live" width="16" height="9"></canvas>
+              <img id="live-img" alt="" hidden>
+              <p class="stage-caption" id="live-caption">Waiting for the first enhanced frame</p>
+            </div>
+            <div class="progress">
+              <div class="progress-head">
+                <p class="stage-label" id="stage-label">Starting</p>
+                <span class="pct" id="pct">0%</span>
+              </div>
+              <p class="sr-only" id="live-status" role="status" aria-live="polite"></p>
+              <div class="rail" id="rail" role="progressbar" aria-labelledby="stage-label" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="rail-fill" id="rail-fill"></div>
+              </div>
+              <dl class="stats">
+                <div><dt id="stat-frames-label">Frames</dt><dd id="stat-frames">0</dd></div>
+                <div><dt>Elapsed</dt><dd id="stat-elapsed">0:00</dd></div>
+                <div><dt id="stat-speed-label">Speed</dt><dd id="stat-speed">-</dd></div>
+                <div><dt>Remaining</dt><dd id="stat-eta">Measuring</dd></div>
+              </dl>
+              <button class="btn btn-outline" type="button" id="cancel-btn">Cancel</button>
+            </div>
+          </div>
+
+          <!-- done -->
+          <div class="vp-state vp-done" id="st-done" hidden>
+            <div id="done-stage"></div>
+            <div class="vcontrols" id="done-controls">
+              <button class="icon-btn" type="button" id="play-btn" aria-label="Play both videos" data-playing="false">
+                <svg viewBox="0 0 24 24" class="i-play" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" class="i-pause" aria-hidden="true"><path d="M7 5h4v14H7zm6 0h4v14h-4z" fill="currentColor"/></svg>
+              </button>
+              <input class="scrub" id="scrub" type="range" min="0" max="1000" value="0" aria-label="Seek both videos">
+              <span class="time" id="time-text">0:00 / 0:00</span>
+              <button class="icon-btn" type="button" id="mute-btn" aria-label="Mute enhanced audio" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5zM15.5 8.5a5 5 0 0 1 0 7M18 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+            <dl class="result-stats" id="done-stats"></dl>
+            <ul class="notes" id="done-notes"></ul>
+            <div class="result-actions">
+              <a class="btn btn-primary" id="download-btn" href="#" download>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0 4.5-4.5M12 15l-4.5-4.5M5 19h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="download-label">Download</span>
+              </a>
+              <a class="btn btn-outline" id="open-full" href="#" target="_blank" rel="noopener" hidden>Open full size</a>
+              <button class="btn btn-ghost" type="button" id="again-btn">Process another</button>
+            </div>
+          </div>
+
+          <!-- error -->
+          <div class="vp-state vp-error" id="st-error" hidden>
+            <svg class="err-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5m0 3.5v.01M10.3 3.9 2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <h3 class="err-title" id="err-title">Something went wrong</h3>
+            <p class="err-msg" id="err-msg"></p>
+            <p class="err-hint" id="err-hint"></p>
+            <div class="result-actions">
+              <button class="btn btn-primary" type="button" id="err-retry">Try again</button>
+              <button class="btn btn-ghost" type="button" id="err-new">Choose another file</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ------------------------------------------- inspector -->
+        <aside class="inspector" aria-label="Settings">
+          <fieldset class="group">
+            <legend>Footage type</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="content" value="rl" checked><span>Real-life</span></label>
+              <label><input type="radio" name="content" value="an"><span>Animation</span></label>
+              <label><input type="radio" name="content" value="3d"><span>3D</span></label>
+            </div>
+            <p class="help">Selects the weights trained for that kind of image.</p>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend>Model size</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="size" value="small"><span>Small</span></label>
+              <label><input type="radio" name="size" value="medium" checked><span>Medium</span></label>
+              <label><input type="radio" name="size" value="large"><span>Large</span></label>
+            </div>
+            <p class="help">Small is fastest. Large is slowest and sharpest.</p>
+          </fieldset>
+
+          <!-- video only -->
+          <div class="only-video">
+            <fieldset class="group">
+              <legend>Encoding quality</legend>
+              <div class="seg" role="radiogroup">
+                <label><input type="radio" name="vquality" value="standard" checked><span>Standard</span></label>
+                <label><input type="radio" name="vquality" value="high"><span>High</span></label>
+              </div>
+              <p class="help">High uses a higher bitrate: a larger file, fewer compression artifacts.</p>
+            </fieldset>
+            <label class="check-row">
+              <input type="checkbox" id="keep-audio" checked>
+              <span>Keep original audio <small>copied without re-encoding</small></span>
+            </label>
+          </div>
+
+          <!-- image only -->
+          <div class="only-image">
+            <fieldset class="group">
+              <legend>Scale</legend>
+              <div class="seg" role="radiogroup">
+                <label><input type="radio" name="scale" value="2" checked><span>2x</span></label>
+                <label><input type="radio" name="scale" value="4"><span>4x</span></label>
+              </div>
+              <p class="help" id="scale-help">4x runs the 2x network twice.</p>
+            </fieldset>
+            <fieldset class="group">
+              <legend>Format</legend>
+              <div class="seg" role="radiogroup">
+                <label><input type="radio" name="format" value="png" checked><span>PNG</span></label>
+                <label><input type="radio" name="format" value="jpeg"><span>JPEG</span></label>
+                <label><input type="radio" name="format" value="webp"><span>WebP</span></label>
+              </div>
+              <div class="range-row" id="img-quality-row" hidden>
+                <label for="img-quality">Quality</label>
+                <input type="range" id="img-quality" min="60" max="100" value="92">
+                <output id="img-quality-out" for="img-quality">92</output>
+              </div>
+            </fieldset>
+          </div>
+
+          <dl class="summary" id="summary"></dl>
+          <ul class="notes" id="notes"></ul>
+
+          <button class="btn btn-primary btn-block" type="button" id="start-btn" disabled>Start upscaling</button>
+          <p class="start-hint" id="start-hint">Choose a file to begin.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================================================== HOW -->
+    <section class="section wrap" id="how" aria-labelledby="how-title">
+      <h2 id="how-title">How it works</h2>
+      <ol class="steps">
+        <li>
+          <h3>Choose a file</h3>
+          <p>Drop a video or an image. Zafronix reads its real size and checks that your browser can process it.</p>
+        </li>
+        <li>
+          <h3>Pick a model</h3>
+          <p>Choose the footage type and model size. The exact output resolution is shown before you start.</p>
+        </li>
+        <li>
+          <h3>Enhance and download</h3>
+          <p>Frames are decoded, enhanced on your GPU and encoded into a new file. Compare it with the original, then download.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===================================================== FEATURES -->
+    <section class="section wrap" id="features" aria-labelledby="features-title">
+      <h2 id="features-title">What it does</h2>
+      <dl class="feature-list">
+        <div><dt>Video to 1080p</dt><dd>Videos smaller than 1080p are enhanced 2x. Sources between 540p and 1080p are enhanced 2x and then resized to fit 1080p.</dd></div>
+        <div><dt>Images up to 8K</dt><dd>2x in one pass, 4x in two passes, capped at 7680 by 4320 pixels. The output size is shown before you start.</dd></div>
+        <div><dt>Private by design</dt><dd>Decoding, enhancement and encoding all happen in this tab. The only downloads are this page and a small model file.</dd></div>
+        <div><dt>Three model sizes</dt><dd>Small, Medium and Large trade speed for sharpness. Weights for real-life footage, animation and 3D renders are included.</dd></div>
+        <div><dt>Original audio kept</dt><dd>Audio is copied into the new MP4 without re-encoding, when it is AAC, MP3 or Opus.</dd></div>
+        <div><dt>Plain limits</dt><dd>Files that are already 1080p or larger, rotated phone clips and unsupported codecs get a clear explanation instead of a silent failure.</dd></div>
+      </dl>
+    </section>
+
+    <!-- ===================================================== FAQ -->
+    <section class="section wrap" id="faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">Questions</h2>
+      <div class="faq">
+        <details>
+          <summary>Are my files uploaded anywhere?</summary>
+          <p>No. Your video or image is read, enhanced and encoded inside your browser, on your own device. This site only serves static files and includes no analytics or tracking scripts.</p>
+        </details>
+        <details>
+          <summary>Which browsers work?</summary>
+          <p>The tool needs WebGPU, and video also needs WebCodecs with H.264 encoding. The latest desktop Chrome or Edge is the safest choice. The status line above the upscaler shows exactly what your browser supports.</p>
+        </details>
+        <details>
+          <summary>Will it add real detail?</summary>
+          <p>It sharpens edges and removes blockiness with a small neural network. It cannot recover detail that was never recorded, so expect cleaner lines rather than new texture. Animation and illustration usually look best; photos improve less.</p>
+        </details>
+        <details>
+          <summary>Why is 4x only for images?</summary>
+          <p>The network doubles size. For images, running it twice gives 4x. For video that would be far too slow in a browser, so video uses one 2x pass and is capped at 1080p.</p>
+        </details>
+        <details>
+          <summary>Why was my video refused?</summary>
+          <p>Videos that are already 1080p or larger, videos stored rotated (many phone recordings), very long files, and codecs your browser cannot decode are refused with the reason shown on screen.</p>
+        </details>
+        <details>
+          <summary>Why is it slow on my phone?</summary>
+          <p>Everything runs on the GPU of the device you use. Phones have much less GPU power and memory than a desktop, so keep files short and small, and expect long processing times.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-in">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="Zafronix AI, back to top">
+          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><use href="#zmark"/></svg>
+          <span class="brand-name">Zafronix</span><span class="brand-ai">AI</span>
+        </a>
+        <p>Enhance Every Frame.</p>
+      </div>
+      <div class="footer-note">
+        <p><strong>Privacy.</strong> Files are processed on your device and are never uploaded. This site uses no analytics or tracking.</p>
+        <p><strong>Open-source notices.</strong> Built on free-ai-video-upscaler by Sam Bhattacharyya (MIT), WebSR, Anime4K, Mediabunny and web-demuxer. <a href="/notices.html">Read the notices</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Zafronix AI">
+  <defs>
+    <linearGradient id="g" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+  <rect width="48" height="48" rx="10" fill="#090A0F"/>
+  <rect x="7" y="7" width="34" height="7" rx="1.5" fill="url(#g)"/>
+  <rect x="7" y="34" width="34" height="7" rx="1.5" fill="url(#g)"/>
+  <polygon points="41,14 32,14 22,22 31,22" fill="url(#g)"/>
+  <g fill="url(#g)" shape-rendering="crispEdges">
+    <rect x="14.5" y="22" width="9" height="6"/>
+    <rect x="7" y="28" width="9" height="6"/>
+  </g>
+</svg>
